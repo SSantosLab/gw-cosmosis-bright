@@ -12,9 +12,10 @@ class gwem():
 
     def __init__(self,config,name):
         
-        data_dir = config.get_string(name,"data_dir", default="data")
-        data_file = config.get_string(name,"data_file", default="test_data.txt")
-        self.data = np.genfromtxt(os.path.join(data_dir,data_file), skip_header=1, unpack=True)        
+        data_dir = config.get_string(name,"data_dir",default="data")
+        data_file = config.get_string(name,"data_file",default="test_simple.txt")
+        self.data = np.genfromtxt(os.path.join(data_dir,data_file),names=True,unpack=True)        
+        self.norm = 0.5 * np.log(2*np.pi**2) * self.data.size
         
     def execute(self, block):
 
@@ -22,14 +23,13 @@ class gwem():
         z_t = block[gwem.dists,"z"]
         dl_theory = interp1d(z_t, dl_t)
 
-        dl_obs = self.data[1]
-        dl_obs_err = self.data[2]
-        z_obs = self.data[3]
-        z_obs_err = self.data[4]
+        dl_obs = self.data["dl"]
+        dl_obs_err = self.data["dlerr"]
+        z_obs = self.data["z"]
+        z_obs_err = self.data["zerr"]
 
         chi2 = ((dl_theory(z_obs) - dl_obs)**2 / dl_obs_err**2).sum()
-        norm = 0.5 * np.log(2*np.pi**2) * self.data.size
-        block[gwem.likes, "GWEM_LIKE"] =  - chi2 / 2.0 - norm
+        block[gwem.likes, "GWEM_LIKE"] =  - chi2 / 2.0 - self.norm
 
         return 0
         

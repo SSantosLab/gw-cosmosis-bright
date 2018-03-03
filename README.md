@@ -1,6 +1,6 @@
 # gw
 
-cosmosis gwem.ini
+cosmosis params.ini
 
-postprocess  --burn 5000  -o plots -p gwem gwem.ini
+postprocess  --burn 5000  -o plots -p gwem params.ini
 

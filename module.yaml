@@ -1,0 +1,47 @@
+# Module description
+
+name: gwem
+version: 1.0
+purpose: Likelihood analysis for cosmological measurements with standard sirens
+url: "https://github.com/SSantosLab/gw"
+interface: gwem.py
+attribution: []
+rules: 
+    "Likelihood analysis code, originally intended for use in DES and LSST DESC. 
+    Feel free to clone or fork the repository to use or modify the code. 
+    Send a pull request if you wish to contribute your modifications. 
+    Contact us via github issues with problems, feedback.  
+    "
+
+cite:
+    - "Soares-Santos, Pereira and Garcia, arXiv:XXXX.XXXXXX"
+
+assumptions:
+    - "Electromagnetic counterpart identified for all events in the sample."
+    - "Peculiar velocities are treatead as a systematic shift in the z measurements."
+    - "Distances determined from the GW data marginalizing over all other parameters."
+
+explanation: |
+    "The era of multi-messenger cosmology started in 2017, with the neutron star merger GW170817.
+    With a significant rate of events expected in 2018 and subsequent years, we were motivated to 
+    incorporate this new cosmological probe into the framework used by DES and LSST DESC for 
+    cosmological analyses. This module is the result of that effort. 
+    "
+
+# List of parameters that can go in the params.ini file in the section for this module    
+
+params:
+    file: Path to gwem.py, the interface file
+    data_dir: Path to directory containing the data files
+    data_file: Name of the data file
+
+#Inputs for a given choice of a parameter, from the values.ini or from other modules
+
+inputs:
+    distances:
+        dl: Double vector of luminosity distances
+        z: Double vector of redshifts
+
+outputs:
+    likelihoods:
+        GWEM_LIKE: Log-likelihood from the data
