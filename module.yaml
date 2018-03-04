@@ -7,25 +7,25 @@ url: "https://github.com/SSantosLab/gw"
 interface: gwem.py
 attribution: []
 rules: 
-    "Likelihood analysis code, originally intended for use in DES and LSST DESC. 
+    "Likelihood analysis code originally intended for use in DES and LSST DESC. 
     Feel free to clone or fork the repository to use or modify the code. 
     Send a pull request if you wish to contribute your modifications. 
     Contact us via github issues with problems, feedback.  
     "
 
 cite:
-    - "Soares-Santos, Pereira and Garcia, arXiv:XXXX.XXXXXX"
+    - "Soares-Santos, Pereira, Garcia, arXiv:XXXX.XXXXXX"
 
 assumptions:
-    - "Electromagnetic counterpart identified for all events in the sample."
-    - "Peculiar velocities are treatead as a systematic shift in the z measurements."
-    - "Distances determined from the GW data marginalizing over all other parameters."
+    - "EM sources have a probability of association with the GW sources."
+    - "Distances determined from the GW data marginalizing over all other astrophysical parameters."
+    - "Redshifts are obtained from spectroscopy of the host galaxies."
+    - "Peculiar velocity corrections are applied and treated as systematic uncertainties."
 
 explanation: |
-    "The era of multi-messenger cosmology started in 2017, with the neutron star merger GW170817.
-    With a significant rate of events expected in 2018 and subsequent years, we were motivated to 
-    incorporate this new cosmological probe into the framework used by DES and LSST DESC for 
-    cosmological analyses. This module is the result of that effort. 
+    "The era of multi-messenger cosmology started with the neutron star merger GW170817.
+    We incorporate this new cosmological probe into the framework used by DES and LSST DESC for 
+    cosmological analyses. The measurement is based on the distance-redshift relation. 
     "
 
 # List of parameters that can go in the params.ini file in the section for this module    
