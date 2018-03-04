@@ -9,11 +9,10 @@ def z(zh,zp):
     z = ( (1+zh) / ((1+zp)*(1+zCMB)) ) - 1
     return z
 
-# Compute the variance propagating the uncertainties in the 
-# redshift, and accounting for possible correlations between measurements
-# of dl and z (for example, if we used the distance information to decide which galaxy 
-# is the counterpart, there would be a correlation; such correlation should be 
-# provided by the user in the data vector)
+# Compute the total variance sigma**2 for the chi**2 calculation.  
+# Propagating uncertainties in both the redshift and distance. 
+# Use correllation coefficients, if provided.
+# Use counterpart probabilities as weights, if provided.
 def sigma2(data,d_model):
 
     # compute first derivative of dl(z) function 
@@ -23,13 +22,6 @@ def sigma2(data,d_model):
     # load random uncertainties from data vector
     z_obs_err = data["zerr"]
     d_obs_err = data["dlerr"]
-
-    # load correlation coefficient, if provided
-    if "rho" in data.dtype.names:
-        rho = data["rho"]
-    else:
-    # otherwise, assume that dl and z measurements are independent
-        rho = np.zeros_like(z_obs_err)
 
     # load systematic uncertainties in z, if provided
     if "zperr" in data.dtype.names:
@@ -49,9 +41,24 @@ def sigma2(data,d_model):
     zerr = np.sqrt(z_obs_err**2 + z_syst_err**2)
     derr = np.sqrt(d_obs_err**2 + d_syst_err**2)
 
+    # load correlation coefficient, if provided
+    if "rho" in data.dtype.names:
+        rho = data["rho"]
+    else:
+    # otherwise, assume that dl and z measurements are independent
+        rho = np.zeros_like(z_obs_err)
+
+    # load weights, if provided
+    if "prob" in data.dtype.names:
+        w = data["prob"]
+    else:
+    # otherwise, assume unity weights 
+        w = np.ones_like(derr)
+
     # compute variance
     var = (derr**2) + (g**2 * zerr**2) + (2 * g * rho * zerr * derr)
 
-    return var
+    # apply weights and return
+    return var/w
 
 
