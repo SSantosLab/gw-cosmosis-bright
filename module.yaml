@@ -24,8 +24,8 @@ assumptions:
 
 explanation: |
     "The era of multi-messenger cosmology started with the neutron star merger GW170817.
-    We incorporate this new cosmological probe into the framework used by DES and LSST DESC for 
-    cosmological analyses. The measurement is based on the distance-redshift relation. 
+    We incorporate this new cosmological probe into the cosmosis framework. 
+    The measurement is based on the distance-redshift relation. 
     "
 
 # List of parameters that can go in the params.ini file in the section for this module    
@@ -45,3 +45,6 @@ inputs:
 outputs:
     likelihoods:
         GWEM_LIKE: Log-likelihood from the data
+    data_vector:
+	GWEM_THEORY: Theoretical prediction values for dl
+	GWEM_INVERSE_COVARIANCE: Inverse of covariance matrix
