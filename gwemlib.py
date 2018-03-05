@@ -1,11 +1,14 @@
 import numpy as np
 from scipy.interpolate import UnivariateSpline
-from scipy.constants import speed_of_light as c
+from scipy.constants import speed_of_light 
+
+c = speed_of_light / 1000. # [km/s]
 
 # Compute the cosmological redshift using Davis et al. 2011 (eq. 15)
 # http://adsabs.harvard.edu/abs/2011ApJ...741...67D
-def z(zh,zp):
-    zCMB = 369.0 / (c/1000.) # Hinshaw et al. 2009
+def z(zh,vp):
+    zCMB = 369.0 / c # Hinshaw et al. 2009
+    zp = vp / c 
     z = ( (1+zh) / ((1+zp)*(1+zCMB)) ) - 1
     return z
 
@@ -24,8 +27,8 @@ def sigma2(data,d_model):
     d_obs_err = data["dlerr"]
 
     # load systematic uncertainties in z, if provided
-    if "zperr" in data.dtype.names:
-        z_syst_err = data["zperr"]
+    if "vperr" in data.dtype.names:
+        z_syst_err = data["vperr"] / c
     else:
     # otherwise, assume zero
         z_syst_err = np.zeros_like(z_obs_err)
