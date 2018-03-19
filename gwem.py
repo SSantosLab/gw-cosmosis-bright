@@ -17,10 +17,13 @@ class gwem():
         
         data_dir = config.get_string(name,"data_dir",default="data")
         data_file = config.get_string(name,"data_file",default="test.txt")
-        self.data = np.genfromtxt(os.path.join(data_dir,data_file),names=True,unpack=True)        
+        self.data = np.genfromtxt(os.path.join(data_dir,data_file),names=True,unpack=True)
         self.norm = 0.5 * np.log(2*np.pi) * self.data.size
+        z_frame = config.get_string(name,"z_frame",default="helio")
         if "vp" in self.data.dtype.names:
-            self.data["z"] = gwemlib.z(self.data["z"],self.data["vp"])
+            self.data["z"] = gwemlib.z(self.data["z"],self.data["vp"],z_frame)
+        else:
+            self.data["z"] = gwemlib.z(self.data["z"],np.zeros_like(self.data["z"]),z_frame)
         
     def execute(self,block):
 
@@ -33,8 +36,12 @@ class gwem():
         block[gwem.likes, "GWEM_LIKE"] =  - (chi2 / 2.0) - self.norm - ((np.log(var)).sum()/2.0) 
 
         # Fisher matrix calculations need this stuff:
-        block[gwem.datav, "GWEM_THEORY"] = dl_theory(self.data["z"])
-        block[gwem.datav, "GWEM_INVERSE_COVARIANCE"] = np.linalg.inv(np.diag(var))
+        if self.data.size > 1:
+            block[gwem.datav, "GWEM_THEORY"] = dl_theory(self.data["z"])
+            block[gwem.datav, "GWEM_INVERSE_COVARIANCE"] = np.linalg.inv(np.diag(var))
+        else:
+            block[gwem.datav, "GWEM_THEORY"] = [dl_theory(self.data["z"])]
+            block[gwem.datav, "GWEM_INVERSE_COVARIANCE"] = [1./var]
 
         return 0
         
