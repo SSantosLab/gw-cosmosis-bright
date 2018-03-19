@@ -1,0 +1,2 @@
+# emid	    gwid    prand    dl	    dlerr   dlerrp dlerrm  z	     zerr     vp      vperr
+AT2017gfo1  170817  4.0e-05  43.8   4.9	    2.9	   6.9	   0.01109   2.4e-4   310.0   150.0
