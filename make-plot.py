@@ -9,19 +9,19 @@ true = [0.3156,.831]
 c = ChainConsumer()
 names=['$\\Omega_m$','$h$','$w$','$S_8$']#,'$h_0$','$\\Omega_b$','$n_s$','$A_s$']
 
-#dfile = '2pt_NG.fits_d_w_chain.txt' # DES Y1 data
-#gwfile = 'maria_o3_sim_test.txt'          # GW simulation O3
-#gwfile= 'alyssaHLVDIJ_sim_test.txt'
-dfile='chains/2pt_sim_1110_baseline_Y3cov.fits_chain_d_w.txt'
-gwfile='marcelle_Y3_forcast.txt'
+dfile = '2pt_NG.fits_d_w_chain.txt' # DES Y1 data
+gwfile = 'maria_o3_sim_test.txt'          # GW simulation O3
+#gwfile= 'gw170817-holz_joint.txt'
+#dfile='chains/2pt_sim_1110_baseline_Y3cov.fits_chain_d_w.txt'
+#gwfile='marcelle_Y3_forcast.txt'
 print
 
 r1 = 0*np.random.random()
 r2 = 0*np.random.random()
 r3 = 0*np.random.random()
 
-#chaindir = '/Users/maria/current-work/des-gw/MainPaper/'
-chaindir='/data/des41.a/data/alyssag/cosmosis/gw/'
+chaindir = '/Users/maria/current-work/des-gw/MainPaper/'
+#chaindir='/data/des41.a/data/alyssag/cosmosis/gw/'
 
 ## DES Y3
 print("--- Using file: ", dfile)
@@ -80,13 +80,12 @@ for i,line in enumerate(f):
         ch.append([om,h,float(words[6])+r2,s8])
         w.append(float(words[30]))
         wold.append(float(words[28]))
-#print(wold)
 w=np.array(wold)*np.array(np.exp(w))
 #w=np.array(np.exp(w))
 ch=np.array(ch)
 print( 'DES Y3 + GW chain size after burn-in = ', len(ch))
 f.close()
-c.add_chain(ch,parameters=names,name=r'\textbf{DES Y3 + GW}',weights=w)
+c.add_chain(ch,parameters=names,name=r'\textbf{DES Y3 + GW170817}',weights=w)
 
 print( "Starting plot...")
 
@@ -94,7 +93,7 @@ c.configure(sigma2d=False,shade_alpha=[0.5, 0.5,.1,1.], kde=1.5, shade=['t','t',
 
 fig = c.plotter.plot(figsize=1.7,extents=[[.19,.45],[.55,.85],[-1.8,-.4],[0.7,.9]])
 
-filename='./desy3_joint_alyssa_HLVDIJ_newweight.png'
+filename='./desy1_joint_gwo3_maria.pdf'
 ax = fig.get_axes()
 ax[8].set_yticks([-1.6, -1.3, -1, -0.7, -0.4])
 ax[14].set_xticks([-1.6, -1.3, -1, -0.7, -0.4])
