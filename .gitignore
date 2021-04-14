@@ -2,3 +2,5 @@ plots
 *.txt
 __pycache__
 local
+params_*.ini
+values_*.ini
